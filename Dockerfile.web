@@ -1,0 +1,27 @@
+FROM golang:latest AS backend
+
+COPY backend/go.mod /app/go.mod
+COPY backend/go.sum /app/go.sum
+WORKDIR /app
+RUN go mod download
+
+COPY backend /app
+RUN go build -o /app/main cmd/server/main.go
+
+FROM node:latest AS frontend
+
+COPY frontend/package.json /app/package.json
+COPY frontend/package-lock.json /app/package-lock.json
+WORKDIR /app
+RUN npm install
+COPY frontend /app
+RUN npm run build
+
+FROM ubuntu:latest
+
+COPY --from=backend /app/main /app/main
+COPY --from=frontend /app/build /app/static
+
+WORKDIR /app
+
+ENTRYPOINT [ "/app/main" ]

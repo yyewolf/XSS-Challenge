@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    ports:
+      - 8080:8080
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile.bot
+    environment:
+      - WEBSITE=http://172.29.253.122:8080
+      - WEBSITE_PATH=/readreport?id=0 
+    depends_on:
+      - app
+    
