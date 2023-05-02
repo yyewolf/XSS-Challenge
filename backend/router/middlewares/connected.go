@@ -14,7 +14,7 @@ func IsConnected(c *gin.Context) {
 	}
 
 	// Check if cookie is valid
-	if cookie != "ckjsdmldMLKJSQ456" {
+	if cookie != "Us3_m3_d4ddy" {
 		c.Redirect(302, "/")
 		c.Abort()
 		return

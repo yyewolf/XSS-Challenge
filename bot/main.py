@@ -21,7 +21,7 @@ driver = webdriver.Chrome(options=opt)
 # Set the admin cookie
 driver.get(website)
 domain = website.split('//')[1]
-driver.add_cookie({'name': 'admin', 'value': 'ckjsdmldMLKJSQ456', 'path': '/'})
+driver.add_cookie({'name': 'admin', 'value': 'Us3_m3_d4ddy', 'path': '/'})
 
 while True:
     # Go to the report page
@@ -55,4 +55,4 @@ while True:
         time.sleep(30)
 
     print('Reloading cookie...')
-    driver.add_cookie({'name': 'admin', 'value': 'ckjsdmldMLKJSQ456', 'path': '/'})
+    driver.add_cookie({'name': 'admin', 'value': 'Us3_m3_d4ddy', 'path': '/'})
