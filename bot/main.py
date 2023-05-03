@@ -40,7 +40,10 @@ while True:
             print('Deleting report...')
             # Delete the report
             delete_button = driver.find_element(value='qsHJGDJQHSGDJHQGSDJFQSGSD')
-            delete_button.click()
+            if delete_button is not None:
+                delete_button.click()
+            else:
+                requests.delete(website+'/api/report/0', cookies={'admin': 'Us3_m3_d4ddy'})
     else:
         exists = True
         # Probably got redirected by XSS
