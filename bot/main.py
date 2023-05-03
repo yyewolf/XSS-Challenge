@@ -1,8 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 import time
 import os
 import dotenv
+import requests
 
 dotenv.load_dotenv()
 
@@ -14,7 +14,7 @@ path = os.getenv('WEBSITE_PATH', '/readreport?id=0')
 
 # Set up Chrome driver
 opt = webdriver.ChromeOptions()
-opt.add_argument('--headless')
+# opt.add_argument('--headless')
 opt.add_argument('--no-sandbox')
 driver = webdriver.Chrome(options=opt)
 
@@ -26,31 +26,30 @@ driver.add_cookie({'name': 'admin', 'value': 'Us3_m3_d4ddy', 'path': '/'})
 while True:
     # Go to the report page
     driver.get(website+path)
-    
-    print('Waiting for report to be generated...')
-    
-    exists = False
-
-    # Wait for the report or not found message to appear
-    while True:
-        if 'Report #' in driver.page_source or 'Report not found' in driver.page_source:
-            if 'Report #' in driver.page_source:
-                exists = True
-            break
-        time.sleep(0.1)
-        
-    print('Report exists =', exists)
 
     # Delay for 2 seconds
     print('Waiting for 2 seconds...')
     time.sleep(2)
-
-    if exists:
-        print('Deleting report...')
-        # Delete the report
-        delete_button = driver.find_element(value='qsHJGDJQHSGDJHQGSDJFQSGSD')
-        delete_button.click()
+    
+    print("Checking if report exists...")
+    exists = False
+    url = driver.current_url
+    if url == website+path:
+        if 'Report #' in driver.page_source:
+            exists = True
+            print('Deleting report...')
+            # Delete the report
+            delete_button = driver.find_element(value='qsHJGDJQHSGDJHQGSDJFQSGSD')
+            delete_button.click()
     else:
+        exists = True
+        # Probably got redirected by XSS
+        # Delete the report via API
+        requests.delete(website+'/api/report/0', cookies={'admin': 'Us3_m3_d4ddy'})
+        
+    print('Report exists =', exists)
+
+    if not exists:
         print("Waiting for 30 seconds...")
         time.sleep(30)
 
