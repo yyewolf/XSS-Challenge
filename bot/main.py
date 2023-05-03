@@ -14,7 +14,7 @@ path = os.getenv('WEBSITE_PATH', '/readreport?id=0')
 
 # Set up Chrome driver
 opt = webdriver.ChromeOptions()
-# opt.add_argument('--headless')
+opt.add_argument('--headless')
 opt.add_argument('--no-sandbox')
 driver = webdriver.Chrome(options=opt)
 
